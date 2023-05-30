@@ -48,8 +48,7 @@ public class BookingService {
     }
     public Mono<FlightBooking> bookFlight(BookingRequestDTO bookingRequestDTO){
         return this.flightBookingRepository.save(this.createEntityFor(bookingRequestDTO))
-                .doOnNext(e -> bookingRequestDTO.withBookingId(e.getId()) )
-                .doOnNext(e -> this.emitCreatedEvent(bookingRequestDTO));
+                .doOnNext(e -> this.emitCreatedEvent( bookingRequestDTO.withBookingId(e.getId())));
     }
 
     private FlightBooking createEntityFor(BookingRequestDTO bookingRequestDTO) {

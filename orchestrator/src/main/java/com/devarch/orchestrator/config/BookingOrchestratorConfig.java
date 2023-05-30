@@ -20,8 +20,8 @@ public class BookingOrchestratorConfig {
     @Bean
     public Function<Flux<OrchestratorRequestDTO>, Flux<OrchestratorResponseDTO>> bookingProcessor(){
         return flux -> flux
-                            .flatMap(dto -> Mono.just(new OrchestratorResponseDTO(BookingStatus.BOOKING_COMPLETED)))
-                            .doOnNext(dto -> System.out.println("Status : " + dto.status()));
+                            .flatMap(dto -> Mono.just(new OrchestratorResponseDTO(dto.bookingId(), BookingStatus.BOOKING_COMPLETED)))
+                            .doOnNext(dto -> System.out.printf("Status::%s ... BookingId::%s %n", dto.status(), dto.bookingId() ));
     }
 
 }
