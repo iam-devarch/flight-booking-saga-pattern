@@ -1,0 +1,9 @@
+spring.cloud.stream:
+  function:
+    definition: bookingProcessor
+  bindings:
+    bookingProcessor-in-0:
+      destination: booking-created
+
+server:
+  port: 8081

@@ -1,3 +1,10 @@
 spring:
   jpa:
     defer-datasource-initialization: true
+
+spring.cloud.stream:
+  function:
+    definition: bookingSupplier
+  bindings:
+    bookingSupplier-out-0:
+      destination: booking-created
