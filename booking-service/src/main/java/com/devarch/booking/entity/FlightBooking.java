@@ -1,5 +1,6 @@
 package com.devarch.booking.entity;
 
+import com.devarch.enums.BookingStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import java.util.UUID;
@@ -11,6 +12,7 @@ public class FlightBooking {
     String passengerName;
     String pnrNumber;
     String flightNumber;
-    String status;
+    Double price;
+    BookingStatus status;
 
 }
