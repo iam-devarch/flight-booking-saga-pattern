@@ -5,7 +5,7 @@ import com.devarch.booking.repository.FlightBookingRepository;
 import com.devarch.dto.BookingRequestDTO;
 import com.devarch.dto.BookingResponseDTO;
 import com.devarch.dto.OrchestratorRequestDTO;
-import com.devarch.enums.BookingStatus;
+import com.devarch.status.BookingStatus;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Service
 public class BookingService {
 
-    private static final Map<String, Double> BOOKING_PRICE =  Map.of(
+    private static final Map<String, Double> BOOKING_PRICE = Map.of(
             "Flt-100", 100d,
             "Flt-500", 500d,
             "Flt-900", 900d
@@ -36,19 +36,18 @@ public class BookingService {
                 .map(this::convertToDTO);
     }
 
-    private BookingResponseDTO convertToDTO(final FlightBooking flightBooking){
-        BookingResponseDTO dto = new BookingResponseDTO();
-        dto.setBookingId(flightBooking.getId());
-        dto.setFlightNumber(flightBooking.getFlightNumber());
-        dto.setPassengerName(flightBooking.getPassengerName());
-        dto.setPnrNumber(flightBooking.getPnrNumber());
-        dto.setAmount(flightBooking.getPrice());
-        dto.setStatus(flightBooking.getStatus());
-        return dto;
+    private BookingResponseDTO convertToDTO(final FlightBooking flightBooking) {
+
+        return new BookingResponseDTO(flightBooking.getId(),
+                flightBooking.getPassengerName(), flightBooking.getPnrNumber(),
+                flightBooking.getFlightNumber(),
+                flightBooking.getPrice(),
+                flightBooking.getStatus());
     }
-    public Mono<FlightBooking> bookFlight(BookingRequestDTO bookingRequestDTO){
+
+    public Mono<FlightBooking> bookFlight(BookingRequestDTO bookingRequestDTO) {
         return this.flightBookingRepository.save(this.createEntityFor(bookingRequestDTO))
-                .doOnNext(e -> this.emitCreatedEvent( bookingRequestDTO.withBookingId(e.getId())));
+                .doOnNext(e -> this.emitCreatedEvent(bookingRequestDTO.withBookingId(e.getId())));
     }
 
     private FlightBooking createEntityFor(BookingRequestDTO bookingRequestDTO) {
@@ -63,13 +62,17 @@ public class BookingService {
         return flightBooking;
     }
 
-    private void emitCreatedEvent(BookingRequestDTO bookingRequestDTO){
+    private void emitCreatedEvent(BookingRequestDTO bookingRequestDTO) {
         this.orchestratorSink.tryEmitNext(this.getOrchestratorRequestDTO(bookingRequestDTO));
     }
 
-    public OrchestratorRequestDTO getOrchestratorRequestDTO(BookingRequestDTO bookingRequestDTO){
+    public OrchestratorRequestDTO getOrchestratorRequestDTO(BookingRequestDTO bookingRequestDTO) {
         Double amount = BOOKING_PRICE.get(bookingRequestDTO.flightNumber());
-        return new OrchestratorRequestDTO(bookingRequestDTO.passengerName(), bookingRequestDTO.pnrNumber(), bookingRequestDTO.flightNumber(), bookingRequestDTO.bookingId(), amount);
+        return new OrchestratorRequestDTO(bookingRequestDTO.bookingId(),
+                bookingRequestDTO.passengerName(),
+                bookingRequestDTO.pnrNumber(),
+                bookingRequestDTO.flightNumber(),
+                amount);
     }
 
 }

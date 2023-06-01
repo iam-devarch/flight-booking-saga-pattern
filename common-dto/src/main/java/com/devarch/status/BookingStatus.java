@@ -1,4 +1,4 @@
-package com.devarch.enums;
+package com.devarch.status;
 
 public enum BookingStatus {
 

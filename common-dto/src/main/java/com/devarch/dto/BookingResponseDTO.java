@@ -1,18 +1,12 @@
 package com.devarch.dto;
 
-import com.devarch.enums.BookingStatus;
-import lombok.Data;
+import com.devarch.status.BookingStatus;
 
 import java.util.UUID;
 
-@Data
-public class BookingResponseDTO {
-
-    private UUID bookingId;
-    private String passengerName;
-    private String pnrNumber;
-    private String flightNumber;
-    private Double amount;
-    private BookingStatus status;
-
-}
+public record BookingResponseDTO(UUID bookingId,
+        String passengerName,
+        String pnrNumber,
+        String flightNumber,
+        Double amount,
+        BookingStatus status) {}

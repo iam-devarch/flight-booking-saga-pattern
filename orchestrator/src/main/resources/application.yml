@@ -7,3 +7,8 @@ spring.cloud.stream:
 
 server:
   port: 8081
+
+service:
+  endpoints:
+    payment: http://localhost:8082
+    seat-reservation: http://localhost:8083

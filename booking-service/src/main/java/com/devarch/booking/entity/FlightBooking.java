@@ -1,6 +1,6 @@
 package com.devarch.booking.entity;
 
-import com.devarch.enums.BookingStatus;
+import com.devarch.status.BookingStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import java.util.UUID;
