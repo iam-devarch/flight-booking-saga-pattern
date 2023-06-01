@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Flux;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Configuration
@@ -20,5 +19,7 @@ public class SupplierHandler {
     public Supplier<Flux<OrchestratorRequestDTO>> bookingSupplier(){
         return () -> flux;
     };
+
+
 
 }
