@@ -4,6 +4,11 @@ spring.cloud.stream:
   bindings:
     bookingProcessor-in-0:
       destination: booking-created
+    bookingProcessor-out-0:
+      destination: booking-updated
+  kafka:
+    binder:
+      replication-factor: 1
 
 server:
   port: 8081
