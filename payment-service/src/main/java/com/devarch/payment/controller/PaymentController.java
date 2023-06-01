@@ -2,6 +2,7 @@ package com.devarch.payment.controller;
 
 import com.devarch.dto.PaymentRequestDTO;
 import com.devarch.dto.PaymentResponseDTO;
+import com.devarch.payment.service.PaymentService;
 import com.devarch.status.PaymentStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -12,14 +13,23 @@ import java.util.UUID;
 @RequestMapping("/payment")
 public class PaymentController {
 
+    public PaymentController(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+
+    private PaymentService paymentService;
+
     @PostMapping("/debit")
-    public Mono<PaymentResponseDTO> bookFlight(@RequestBody Mono<PaymentRequestDTO> mono){
-        return Mono.just(new PaymentResponseDTO("", UUID.randomUUID(), 123d, PaymentStatus.PAYMENT_APPROVED))
-                .doOnNext(dto -> System.out.println(dto.bookingId()));
+    public PaymentResponseDTO debit(@RequestBody PaymentRequestDTO requestDTO) {
+        System.out.printf("Debiting amount %f \n", requestDTO.amount() );
+        PaymentResponseDTO paymentResponseDTO = paymentService.debit(requestDTO);
+        System.out.printf("Debit status is %s", paymentResponseDTO.paymentStatus());
+        return paymentResponseDTO;
     }
 
     @GetMapping("/credit")
-    public void getAllBookings(@RequestBody Mono<PaymentRequestDTO> mono){
-        System.out.println("Creited amount");
+    public void credit(@RequestBody PaymentRequestDTO requestDTO) {
+        paymentService.credit(requestDTO);
+        System.out.printf("Credited back amount %f", requestDTO.amount() );
     }
 }

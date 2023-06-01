@@ -9,7 +9,7 @@ import java.util.UUID;
 public class FlightBooking {
     @Id
     UUID id;
-    String passengerName;
+    Integer passengerId;
     String pnrNumber;
     String flightNumber;
     Double price;

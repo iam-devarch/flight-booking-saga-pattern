@@ -54,7 +54,7 @@ public class BookingOrchestratorService {
 
     private OrchestratorResponseDTO getResponse(OrchestratorRequestDTO requestDTO, BookingStatus bookingStatus) {
         return new OrchestratorResponseDTO(requestDTO.bookingId(),
-                requestDTO.passengerName(),
+                requestDTO.passengerId(),
                 requestDTO.pnrNumber(),
                 requestDTO.flightNumber(),
                 requestDTO.amount(),
@@ -67,7 +67,7 @@ public class BookingOrchestratorService {
     }
 
     private PaymentRequestDTO getPaymentRequestDTO(OrchestratorRequestDTO requestDTO) {
-        return new PaymentRequestDTO(requestDTO.passengerName(), requestDTO.bookingId(), requestDTO.amount());
+        return new PaymentRequestDTO(requestDTO.passengerId(), requestDTO.bookingId(), requestDTO.amount());
 
     }
 

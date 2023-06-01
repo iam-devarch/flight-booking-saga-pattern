@@ -6,4 +6,3 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties("service.endpoints")
 public record OrchestratorProperties (String seatReservation, String payment) {}
-

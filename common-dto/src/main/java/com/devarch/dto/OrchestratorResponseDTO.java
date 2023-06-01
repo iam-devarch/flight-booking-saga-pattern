@@ -5,7 +5,7 @@ import com.devarch.status.BookingStatus;
 import java.util.UUID;
 
 public record OrchestratorResponseDTO(UUID bookingId,
-                                      String passengerName,
+                                      Integer passengerId,
                                       String pnrNumber,
                                       String flightNumber,
                                       Double amount,

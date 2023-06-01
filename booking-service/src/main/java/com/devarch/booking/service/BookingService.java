@@ -39,7 +39,7 @@ public class BookingService {
     private BookingResponseDTO convertToDTO(final FlightBooking flightBooking) {
 
         return new BookingResponseDTO(flightBooking.getId(),
-                flightBooking.getPassengerName(), flightBooking.getPnrNumber(),
+                flightBooking.getPassengerId(), flightBooking.getPnrNumber(),
                 flightBooking.getFlightNumber(),
                 flightBooking.getPrice(),
                 flightBooking.getStatus());
@@ -54,7 +54,7 @@ public class BookingService {
         FlightBooking flightBooking = new FlightBooking();
         flightBooking.setId(bookingRequestDTO.bookingId());
         flightBooking.setFlightNumber(bookingRequestDTO.flightNumber());
-        flightBooking.setPassengerName(bookingRequestDTO.passengerName());
+        flightBooking.setPassengerId(bookingRequestDTO.passengerId());
         flightBooking.setPnrNumber(bookingRequestDTO.pnrNumber());
         flightBooking.setPrice(BOOKING_PRICE.get(bookingRequestDTO.flightNumber()));
         flightBooking.setStatus(BookingStatus.BOOKING_CREATED);
@@ -69,7 +69,7 @@ public class BookingService {
     public OrchestratorRequestDTO getOrchestratorRequestDTO(BookingRequestDTO bookingRequestDTO) {
         Double amount = BOOKING_PRICE.get(bookingRequestDTO.flightNumber());
         return new OrchestratorRequestDTO(bookingRequestDTO.bookingId(),
-                bookingRequestDTO.passengerName(),
+                bookingRequestDTO.passengerId(),
                 bookingRequestDTO.pnrNumber(),
                 bookingRequestDTO.flightNumber(),
                 amount);
