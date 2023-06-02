@@ -58,6 +58,7 @@ public class BookingService {
         flightBooking.setPnrNumber(bookingRequestDTO.pnrNumber());
         flightBooking.setPrice(BOOKING_PRICE.get(bookingRequestDTO.flightNumber()));
         flightBooking.setStatus(BookingStatus.BOOKING_CREATED);
+        flightBooking.setBookedSeats(bookingRequestDTO.bookedSeats());
 
         return flightBooking;
     }
@@ -72,7 +73,8 @@ public class BookingService {
                 bookingRequestDTO.passengerId(),
                 bookingRequestDTO.pnrNumber(),
                 bookingRequestDTO.flightNumber(),
-                amount);
+                amount,
+                bookingRequestDTO.bookedSeats());
     }
 
 }

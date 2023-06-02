@@ -6,4 +6,5 @@ public record OrchestratorRequestDTO (UUID bookingId,
                                       Integer passengerId,
                                       String pnrNumber,
                                       String flightNumber,
-                                      Double amount){ }
+                                      Double amount,
+                                      Integer bookedSeats){ }

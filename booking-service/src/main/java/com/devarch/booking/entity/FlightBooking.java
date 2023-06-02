@@ -14,5 +14,6 @@ public class FlightBooking {
     String flightNumber;
     Double price;
     BookingStatus status;
+    Integer bookedSeats;
 
 }
