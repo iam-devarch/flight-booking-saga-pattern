@@ -5,5 +5,6 @@ CREATE TABLE FLIGHT_BOOKING (
     pnr_number VARCHAR(50),
     flight_number VARCHAR(50),
     price NUMERIC(10, 2),
-    status VARCHAR(50)
+    status VARCHAR(50),
+    booked_seats NUMERIC(10)
 );

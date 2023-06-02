@@ -4,7 +4,9 @@ package com.devarch.orchestrator.service;
 import com.devarch.dto.OrchestratorRequestDTO;
 import com.devarch.dto.OrchestratorResponseDTO;
 import com.devarch.dto.PaymentRequestDTO;
+import com.devarch.dto.SeatReservationRequestDTO;
 import com.devarch.orchestrator.tasks.PaymentTask;
+import com.devarch.orchestrator.tasks.SeatReservationTask;
 import com.devarch.status.BookingStatus;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -63,12 +65,17 @@ public class BookingOrchestratorService {
 
     private BookingTransaction getTransactionTasks(OrchestratorRequestDTO requestDTO) {
         TransactionTask paymentTask = new PaymentTask(paymentClient, getPaymentRequestDTO(requestDTO));
-        return new BookingTransaction(List.of(paymentTask));
+        TransactionTask seatReservationTask = new SeatReservationTask(seatReservationClient, getSeatReservationDTO(requestDTO));
+        return new BookingTransaction(List.of(paymentTask, seatReservationTask));
     }
 
     private PaymentRequestDTO getPaymentRequestDTO(OrchestratorRequestDTO requestDTO) {
         return new PaymentRequestDTO(requestDTO.passengerId(), requestDTO.bookingId(), requestDTO.amount());
 
+    }
+
+    private SeatReservationRequestDTO getSeatReservationDTO(OrchestratorRequestDTO requestDTO) {
+                return new SeatReservationRequestDTO(requestDTO.passengerId(), requestDTO.flightNumber(), requestDTO.bookingId(), requestDTO.bookedSeats());
     }
 
 }
