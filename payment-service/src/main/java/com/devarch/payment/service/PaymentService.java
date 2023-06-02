@@ -30,11 +30,13 @@ public class PaymentService {
             responseDTO = responseDTO.withPaymentStatus(PaymentStatus.PAYMENT_APPROVED);
             this.passengerAmountBalance.put(requestDTO.passengerId(), balance - requestDTO.amount());
         }
+        System.out.printf("Available balance after debit is %f \n", passengerAmountBalance.get(requestDTO.passengerId()));
         return responseDTO;
     }
 
     public void credit(final PaymentRequestDTO requestDTO){
         this.passengerAmountBalance.computeIfPresent(requestDTO.passengerId(), (k, v) -> Double.sum(v, requestDTO.amount()));
+        System.out.printf("Available balance after Credit is %f \n", passengerAmountBalance.get(requestDTO.passengerId()));
     }
 
 }

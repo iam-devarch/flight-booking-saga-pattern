@@ -17,7 +17,7 @@ public class SupplierHandler {
 
     @Bean
     public Supplier<Flux<OrchestratorRequestDTO>> bookingSupplier(){
-        return () -> flux;
+        return () -> flux.doOnNext(dto -> System.out.println("Emitting event for :: " + dto));
     };
 
 

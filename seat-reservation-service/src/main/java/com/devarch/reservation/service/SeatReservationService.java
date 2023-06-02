@@ -31,11 +31,13 @@ public class SeatReservationService {
             responseDTO = responseDTO.withPaymentStatus(SeatReservationStatus.RESERVATION_CONFIRMED);
             this.flightSeatsAvailability.put(requestDTO.flightNumber(), availableSeats - requestDTO.bookedSeats());
         }
+        System.out.printf("Available number of seats after reservation is :: %d \n", flightSeatsAvailability.get(requestDTO.flightNumber()));
         return responseDTO;
     }
 
     public void revertSeats(final SeatReservationRequestDTO requestDTO){
         this.flightSeatsAvailability.computeIfPresent(requestDTO.flightNumber(), (k, v) -> Integer.sum(v, requestDTO.bookedSeats()));
+        System.out.printf("Available number of seats after reverting is :: %d \n", flightSeatsAvailability.get(requestDTO.flightNumber()));
     }
 
 }
