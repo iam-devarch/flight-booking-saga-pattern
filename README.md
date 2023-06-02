@@ -1,9 +1,24 @@
-# Saga design pattern demo with orchestrator way
+# Distributed transaction using Saga design pattern with orchestrator way
 (**Note:** As this project focuses more on demo or usage of design pattern there are no tests for this)
-## Prerequisites
+## Prerequisites / Tech stack
 * Apache Kafka 
 * Java 17+
+* WebFlux
+* H2 DB
 * Postman or SoapUI (For ease of API calls)
+
+
+## Functionality
+This application performs flight booking operation as a distributed transaction.  
+So failure in any one task will revert back and cancel the whole booking.  
+When **/booking/confirm** service is triggered the transaction starts.  
+It mainly comprises two major below tasks which have **commit** and **rollback** operations completed by service calls **/seats/reserve** and **/payment/debit**.  
+
+* Payment task
+* Seat reservation task
+
+If there's failure in any one of them for any reason (for e.g. insufficient balance or unavailability of seats), the whole transaction will be cancelled.  
+The cancellation is completed by calling the **/seats/revert** and **/payment/credit** services for each of above transaction tasks. The flow diagram for this is shown below.
 
 ## Flow Diagram for Flight booking transaction
 ![](/images/saga-orchestrator.png)
@@ -15,10 +30,11 @@
   * OrchestratorApplication.java
   * SeatReservationServiceApplication.java
   * PaymentServiceApplication.java
-* After that you can call services as shown in below snapshots from postman or soapUI
+* After that you can call services as shown in below snapshots from postman or soapUI    
+
   * Call /booking/confirm service as below
   ![](/images/booking-confirm-service.png)
 
-  * Call /booking/confirm service as below
+  * Call /booking/confirm service as below  
   ![](/images/booking-showAll-service.png)
 
