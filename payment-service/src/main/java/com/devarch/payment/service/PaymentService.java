@@ -5,6 +5,8 @@ import com.devarch.dto.PaymentRequestDTO;
 import com.devarch.dto.PaymentResponseDTO;
 import com.devarch.status.PaymentStatus;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class PaymentService {
 
+    private static final Logger logger = LoggerFactory.getLogger(PaymentService.class);
     private Map<Integer, Double> passengerAmountBalance;
 
     @PostConstruct
@@ -30,13 +33,13 @@ public class PaymentService {
             responseDTO = responseDTO.withPaymentStatus(PaymentStatus.PAYMENT_APPROVED);
             this.passengerAmountBalance.put(requestDTO.passengerId(), balance - requestDTO.amount());
         }
-        System.out.printf("Available balance after debit is %f \n", passengerAmountBalance.get(requestDTO.passengerId()));
+        logger.debug("Available balance after debit is {}", passengerAmountBalance.get(requestDTO.passengerId()));
         return responseDTO;
     }
 
     public void credit(final PaymentRequestDTO requestDTO){
         this.passengerAmountBalance.computeIfPresent(requestDTO.passengerId(), (k, v) -> Double.sum(v, requestDTO.amount()));
-        System.out.printf("Available balance after Credit is %f \n", passengerAmountBalance.get(requestDTO.passengerId()));
+        logger.debug("Available balance after Credit is {}", passengerAmountBalance.get(requestDTO.passengerId()));
     }
 
 }

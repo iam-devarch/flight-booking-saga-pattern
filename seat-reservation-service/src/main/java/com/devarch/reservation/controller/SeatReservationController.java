@@ -3,12 +3,15 @@ package com.devarch.reservation.controller;
 import com.devarch.dto.SeatReservationRequestDTO;
 import com.devarch.dto.SeatReservationResponseDTO;
 import com.devarch.reservation.service.SeatReservationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/seats")
 public class SeatReservationController {
 
+    private static final Logger logger = LoggerFactory.getLogger(SeatReservationController.class);
     public SeatReservationController(SeatReservationService seatReservationService) {
         this.seatReservationService = seatReservationService;
     }
@@ -17,15 +20,15 @@ public class SeatReservationController {
 
     @PostMapping("/reserve")
     public SeatReservationResponseDTO reserve(@RequestBody SeatReservationRequestDTO requestDTO) {
-        System.out.printf("Reserving %d seats \n", requestDTO.bookedSeats() );
+        logger.debug("Reserving {} seats ", requestDTO.bookedSeats() );
         SeatReservationResponseDTO seatReservationResponseDTO = seatReservationService.reserveSeats(requestDTO);
-        System.out.printf("Reservation status for passengerId %s is %s \n", seatReservationResponseDTO.passengerId(), seatReservationResponseDTO.seatReservationStatus());
+        logger.debug("Reservation status for passengerId {} is {} ", seatReservationResponseDTO.passengerId(), seatReservationResponseDTO.seatReservationStatus());
         return seatReservationResponseDTO;
     }
 
     @GetMapping("/revert")
     public void credit(@RequestBody SeatReservationRequestDTO requestDTO) {
         seatReservationService.revertSeats(requestDTO);
-        System.out.printf("Reverted back seats %d", requestDTO.bookedSeats() );
+        logger.debug("Reverted back seats {}", requestDTO.bookedSeats() );
     }
 }

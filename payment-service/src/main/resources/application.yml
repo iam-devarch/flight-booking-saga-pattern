@@ -1,2 +1,9 @@
+logging:
+  level:
+    org.springframework: ERROR
+    com.devarch: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
+
 server:
   port: 8082

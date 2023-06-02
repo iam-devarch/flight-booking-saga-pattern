@@ -5,6 +5,8 @@ import com.devarch.dto.SeatReservationRequestDTO;
 import com.devarch.dto.SeatReservationResponseDTO;
 import com.devarch.status.SeatReservationStatus;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class SeatReservationService {
 
+    private static final Logger logger = LoggerFactory.getLogger(SeatReservationService.class);
     private Map<String, Integer> flightSeatsAvailability;
 
     @PostConstruct
@@ -31,13 +34,13 @@ public class SeatReservationService {
             responseDTO = responseDTO.withPaymentStatus(SeatReservationStatus.RESERVATION_CONFIRMED);
             this.flightSeatsAvailability.put(requestDTO.flightNumber(), availableSeats - requestDTO.bookedSeats());
         }
-        System.out.printf("Available number of seats after reservation is :: %d \n", flightSeatsAvailability.get(requestDTO.flightNumber()));
+        logger.debug("Available number of seats after reservation is :: {}", flightSeatsAvailability.get(requestDTO.flightNumber()));
         return responseDTO;
     }
 
     public void revertSeats(final SeatReservationRequestDTO requestDTO){
         this.flightSeatsAvailability.computeIfPresent(requestDTO.flightNumber(), (k, v) -> Integer.sum(v, requestDTO.bookedSeats()));
-        System.out.printf("Available number of seats after reverting is :: %d \n", flightSeatsAvailability.get(requestDTO.flightNumber()));
+        logger.debug("Available number of seats after reverting is :: {}", flightSeatsAvailability.get(requestDTO.flightNumber()));
     }
 
 }
