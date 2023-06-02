@@ -1,0 +1,19 @@
+spring.cloud.stream:
+  function:
+    definition: bookingProcessor
+  bindings:
+    bookingProcessor-in-0:
+      destination: booking-created
+    bookingProcessor-out-0:
+      destination: booking-updated
+  kafka:
+    binder:
+      replication-factor: 1
+
+server:
+  port: 8081
+
+service:
+  endpoints:
+    payment: http://localhost:8082
+    seat-reservation: http://localhost:8083

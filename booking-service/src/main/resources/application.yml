@@ -1,0 +1,25 @@
+spring:
+  jpa:
+    defer-datasource-initialization: true
+  cloud:
+    function:
+      definition: bookingSupplier;bookingConsumer
+    stream:
+      kafka:
+      bindings:
+        bookingSupplier-out-0:
+          destination: booking-created
+        bookingConsumer-in-0:
+          destination: booking-updated
+
+#----------Alternate Configuration below------------------
+
+#spring.cloud.stream:
+#
+#  function:
+#    definition: bookingSupplier;bookingConsumer
+#  bindings:
+#    bookingSupplier-out-0:
+#      destination: booking-created
+#    bookingConsumer-in-0:
+#      destination: booking-updated
