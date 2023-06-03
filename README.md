@@ -1,5 +1,9 @@
 # Distributed transaction using Saga design pattern with orchestrator way
-(**Note:** As this project focuses more on demo or usage of design pattern there are no tests for this)
+(**Note:** As this project focuses more on demo or usage of design pattern there are no tests for this)  
+
+**Scope for enhancement** : This project currently saves only current state of all the transactions and hence cannot audit or trace back history of events. 
+We can enhance it to use **Event Sourcing pattern** to capture each db save as one event which will make it auditable and history can be traced back.  
+
 ## Prerequisites / Tech stack
 * Apache Kafka 
 * Java 17+
